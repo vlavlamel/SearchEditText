@@ -48,11 +48,11 @@ public class SearchEditText extends LinearLayout {
 			emitter = stringEmitter;
 		}
 	}, Emitter.BackpressureMode.LATEST)
-		.debounce(60000, TimeUnit.MILLISECONDS)
-		.distinctUntilChanged()
+		.debounce(600, TimeUnit.MILLISECONDS)
+		.distinctUntilChanged() 
 		.subscribeOn(Schedulers.io())
 		.observeOn(AndroidSchedulers.mainThread())
-		.replay(1);
+		.replay();
 
 	public SearchEditText(@NonNull Context context) {
 		super(context);

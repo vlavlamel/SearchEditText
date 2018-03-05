@@ -24,6 +24,7 @@ import rx.Emitter;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
+import rx.observables.ConnectableObservable;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
@@ -41,16 +42,17 @@ public class SearchEditText extends LinearLayout {
 
 	private Emitter<String> emitter;
 
-	private Observable<String> observable = Observable.create(new Action1<Emitter<String>>() {
+	private ConnectableObservable<String> observable = Observable.create(new Action1<Emitter<String>>() {
 		@Override
 		public void call(Emitter<String> stringEmitter) {
 			emitter = stringEmitter;
 		}
 	}, Emitter.BackpressureMode.LATEST)
-		.debounce(400, TimeUnit.MILLISECONDS)
+		.debounce(60000, TimeUnit.MILLISECONDS)
 		.distinctUntilChanged()
 		.subscribeOn(Schedulers.io())
-		.observeOn(AndroidSchedulers.mainThread());
+		.observeOn(AndroidSchedulers.mainThread())
+		.replay(1);
 
 	public SearchEditText(@NonNull Context context) {
 		super(context);
@@ -80,6 +82,7 @@ public class SearchEditText extends LinearLayout {
 		});
 		setRightIcon(rightIconId);
 		setHint(hint);
+		observable.connect();
 		initSearchTextListener();
 	}
 
@@ -95,7 +98,7 @@ public class SearchEditText extends LinearLayout {
 			}
 
 			@Override
-			public void afterTextChanged(Editable s) {
+			public void afterTextChanged(final Editable s) {
 				if (TextUtils.isEmpty(s.toString())) {
 					clearBtn.setVisibility(GONE);
 				} else {

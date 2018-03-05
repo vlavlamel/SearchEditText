@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity implements SearchEditText.On
 	public void onSearchTextSubmit(String s) {
 		Toast.makeText(this, "Search clicked", Toast.LENGTH_SHORT)
 			.show();
-		textView.setText(s);
+		//textView.setText(s);
 	}
 
 	@Override

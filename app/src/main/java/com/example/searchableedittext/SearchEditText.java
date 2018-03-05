@@ -20,11 +20,11 @@ import android.widget.TextView;
 
 import java.util.concurrent.TimeUnit;
 
+import rx.Emitter;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
-import rx.subjects.BehaviorSubject;
 import rx.subscriptions.CompositeSubscription;
 
 public class SearchEditText extends LinearLayout {
@@ -39,9 +39,14 @@ public class SearchEditText extends LinearLayout {
 
 	private CompositeSubscription mCompositeSubscription = new CompositeSubscription();
 
-	private final BehaviorSubject<String> subject = BehaviorSubject.create();
+	private Emitter<String> emitter;
 
-	private final Observable<String> observable = subject
+	private Observable<String> observable = Observable.create(new Action1<Emitter<String>>() {
+		@Override
+		public void call(Emitter<String> stringEmitter) {
+			emitter = stringEmitter;
+		}
+	}, Emitter.BackpressureMode.LATEST)
 		.debounce(400, TimeUnit.MILLISECONDS)
 		.distinctUntilChanged()
 		.subscribeOn(Schedulers.io())
@@ -106,7 +111,8 @@ public class SearchEditText extends LinearLayout {
 							}
 						}));
 				}
-				subject.onNext(s.toString());
+				if(emitter !=null)
+					emitter.onNext(s.toString());
 			}
 		});
 		searchEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {

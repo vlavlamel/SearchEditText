@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/SearchEditText.iml" filepath="$PROJECT_DIR$/SearchEditText.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SearchableEditText.iml" filepath="$PROJECT_DIR$/SearchableEditText.iml" />
       <module fileurl="file://C:\dev\SearchEditText\SearchableEditText.iml" filepath="C:\dev\SearchEditText\SearchableEditText.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://C:\dev\SearchEditText\app\app.iml" filepath="C:\dev\SearchEditText\app\app.iml" />

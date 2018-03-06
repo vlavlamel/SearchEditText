@@ -52,7 +52,7 @@ public class SearchEditText extends LinearLayout {
 		.distinctUntilChanged() 
 		.subscribeOn(Schedulers.io())
 		.observeOn(AndroidSchedulers.mainThread())
-		.replay();
+		.publish();
 
 	public SearchEditText(@NonNull Context context) {
 		super(context);
@@ -67,6 +67,7 @@ public class SearchEditText extends LinearLayout {
 		rightIconId = a.getResourceId(R.styleable.SearchEditText_right_icon, -1);
 		hint = a.getString(R.styleable.SearchEditText_hint);
 		a.recycle();
+		observable.connect();
 		initViews();
 	}
 
@@ -82,7 +83,6 @@ public class SearchEditText extends LinearLayout {
 		});
 		setRightIcon(rightIconId);
 		setHint(hint);
-		observable.connect();
 		initSearchTextListener();
 	}
 
